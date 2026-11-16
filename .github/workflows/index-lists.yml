@@ -1,0 +1,49 @@
+name: Index lists (Nifty 500 + Nifty 1000)
+
+# Public repo: GitHub standard runners free hain. Dono lists ek sath, sirf official NSE CSV + data commit.
+# Koi secret, FYERS, Firebase ya app code nahi.
+on:
+  schedule:
+    - cron: "40 13 * * 1"   # Har Monday 19:10 IST (GitHub 15-45 min late ho sakta hai)
+  workflow_dispatch:
+    inputs:
+      accept:
+        description: "Nifty 500 count 500 na ho tab bhi manzoor karo (official announcement dekh ke hi)"
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+
+concurrency: index-lists
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Nifty 500 list
+        env:
+          ACCEPT: ${{ inputs.accept && '1' || '0' }}
+        run: python3 scripts/n500_fetch.py
+      - name: Nifty 1000 list
+        if: always()
+        run: python3 scripts/n1000_fetch.py
+      - name: Report summary
+        if: always()
+        run: |
+          for f in data/nifty500/report.md data/nifty1000/report.md; do test -f "$f" && cat "$f" >> "$GITHUB_STEP_SUMMARY" || true; done
+      - name: Commit (sirf badlav pe, sirf data/)
+        if: always()
+        run: |
+          test -d data || exit 0
+          git add -A data
+          git diff --cached --quiet && exit 0
+          git -c user.name="index-bot" -c user.email="actions@users.noreply.github.com" commit -m "Index lists: run ${{ github.run_id }}"
+          git push
