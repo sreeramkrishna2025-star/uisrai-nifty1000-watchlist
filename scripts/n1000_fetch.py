@@ -7,7 +7,16 @@ Blocking checks: exactly 1000 real constituents, no duplicate symbol.
 Blocking check: every Nifty 500 symbol (fetched from the official Nifty 500 CSV) is inside the Nifty 1000 list.
 master.csv is written only when every blocking check passes. A failure keeps the previous file.
 """
-import csv, io, os, sys, datetime, urllib.request
+import csv, io, json, os, re, sys, datetime, urllib.request
+
+IND = {"Financial Services": "Finance", "Healthcare": "Pharma/Health", "Information Technology": "IT",
+       "Automobile and Auto Components": "Auto", "Fast Moving Consumer Goods": "FMCG", "Oil Gas & Consumable Fuels": "Oil & Gas",
+       "Metals & Mining": "Metals", "Telecommunication": "Telecom", "Construction Materials": "Cement",
+       "Media Entertainment & Publication": "Media", "Forest Materials": "Forest"}
+
+
+def nm(n):
+    return re.sub(r"\s*(Ltd\.?|Limited)\s*$", "", n.strip())
 
 NIFTY1000_SOURCES = [
     "https://www.niftyindices.com/IndexConstituent/ind_nifty1000_list.csv",
@@ -73,6 +82,9 @@ def main():
         with open(MASTER, "w", newline="", encoding="utf-8") as f:
             w = csv.DictWriter(f, fieldnames=FIELDS, extrasaction="ignore")
             w.writeheader(); w.writerows(real)
+        json.dump({"asOf": TODAY, "source": src, "count": len(real),
+                   "list": [[r["Symbol"], nm(r["Company Name"]), IND.get(r["Industry"], r["Industry"])] for r in real]},
+                  open(f"{D}/n1000.json", "w", encoding="utf-8"), ensure_ascii=False, separators=(",", ":"))
         lines += ["", "Status: master.csv likha gaya (validation pass)."]
     if no_isin:
         lines += ["", "## Note: ISIN missing", *[f"- {s}" for s in no_isin[:50]]]
