@@ -1,0 +1,30 @@
+name: Nifty 1000 constituent list
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency: n1000
+
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - name: Official Nifty 1000 list laao aur validate karo
+        run: python3 scripts/n1000_fetch.py
+      - name: Report summary
+        if: always()
+        run: test -f data/nifty1000/report.md && cat data/nifty1000/report.md >> "$GITHUB_STEP_SUMMARY" || true
+      - name: Commit (sirf badlav pe, sirf data/nifty1000)
+        if: always()
+        run: |
+          git add -A data/nifty1000
+          git diff --cached --quiet && exit 0
+          git -c user.name="n1000-bot" -c user.email="actions@users.noreply.github.com" commit -m "Nifty 1000 list: run ${{ github.run_id }}"
+          git push
