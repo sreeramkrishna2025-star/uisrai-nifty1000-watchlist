@@ -69,6 +69,7 @@ def main():
     if problems:
         lines += ["", "## BLOCKING: master.csv NAHI likha gaya", *[f"- {p}" for p in problems]]
     else:
+        os.makedirs(D, exist_ok=True)
         with open(MASTER, "w", newline="", encoding="utf-8") as f:
             w = csv.DictWriter(f, fieldnames=FIELDS, extrasaction="ignore")
             w.writeheader(); w.writerows(real)
