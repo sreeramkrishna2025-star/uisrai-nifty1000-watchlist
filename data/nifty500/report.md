@@ -2,10 +2,11 @@
 
 - Check: 2026-11-16 (IST)
 - Source: https://www.niftyindices.com/IndexConstituent/ind_nifty500list.csv
-- Pichhli list: — (pehla snapshot)
+- Pichhli list: 501
 - Nayi official list: 501
 - Added: 0 · Removed: 0
-- **BASELINE: yeh pehla snapshot hai, iske pehle ki history nahi hai.**
+
+Koi badlav nahi.
 
 ## Pichhle badlav (history)
 
