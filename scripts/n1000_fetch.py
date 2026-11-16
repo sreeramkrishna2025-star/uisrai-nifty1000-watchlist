@@ -10,9 +10,9 @@ master.csv is written only when every blocking check passes. A failure keeps the
 import csv, io, os, sys, datetime, urllib.request
 
 NIFTY1000_SOURCES = [
-    "https://www.niftyindices.com/IndexConstituent/ind_nifty1000list.csv",
-    "https://nsearchives.nseindia.com/content/indices/ind_nifty1000list.csv",
-    "https://archives.nseindia.com/content/indices/ind_nifty1000list.csv",
+    "https://www.niftyindices.com/IndexConstituent/ind_nifty1000_list.csv",
+    "https://nsearchives.nseindia.com/content/indices/ind_nifty1000_list.csv",
+    "https://archives.nseindia.com/content/indices/ind_nifty1000_list.csv",
 ]
 NIFTY500_SOURCES = [
     "https://www.niftyindices.com/IndexConstituent/ind_nifty500list.csv",

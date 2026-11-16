@@ -24,6 +24,7 @@ jobs:
       - name: Commit (sirf badlav pe, sirf data/nifty1000)
         if: always()
         run: |
+          if [ ! -d data/nifty1000 ]; then echo 'data/nifty1000 nahi bana (fetch fail) - commit skip'; exit 0; fi
           git add -A data/nifty1000
           git diff --cached --quiet && exit 0
           git -c user.name="n1000-bot" -c user.email="actions@users.noreply.github.com" commit -m "Nifty 1000 list: run ${{ github.run_id }}"
