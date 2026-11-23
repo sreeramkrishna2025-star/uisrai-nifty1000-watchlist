@@ -1,6 +1,6 @@
 # Nifty 500 Constituent Tracker
 
-- Check: 2026-11-16 (IST)
+- Check: 2026-11-23 (IST)
 - Source: https://www.niftyindices.com/IndexConstituent/ind_nifty500list.csv
 - Pichhli list: 501
 - Nayi official list: 501

@@ -1,6 +1,6 @@
 # Nifty 1000 constituent list
 
-- Check: 2026-11-16 (IST)
+- Check: 2026-11-23 (IST)
 - Source: https://www.niftyindices.com/IndexConstituent/ind_nifty1000_list.csv
 - Nifty 1000 constituents: 1000
 - Nifty 500 symbols (official list): 500
